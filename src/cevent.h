@@ -108,7 +108,7 @@ typedef struct
 
 void ceventInit(void);
 
-void ceventPost(unsigned short event);
+void ceventPost(unsigned short event, void *para);
 
 #endif
 

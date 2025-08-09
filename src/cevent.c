@@ -97,7 +97,7 @@ void ceventInit(void)
  * @param cevent cevent
  * 
  */
-static void ceventRun(CEvent *cevent)
+static void ceventRun(CEvent *cevent, void *para)
 {
     if (cevent->paramNum < 1)
     {
@@ -107,8 +107,8 @@ static void ceventRun(CEvent *cevent)
     {
     case 1:
     {
-        void (*function)() = (void (*)())(cevent->param[0]);
-        function();
+        void (*function)(const void *) = (void (*)())(cevent->param[0]);
+        function(para);
         break;
     }
     case 2:
@@ -171,14 +171,14 @@ static void ceventRun(CEvent *cevent)
  * @param event 事件
  * 
  */
-static void ceventHandler(unsigned short event)
+static void ceventHandler(unsigned short event, void *para)
 {
 #if CEVENT_SPEED_OPTIMIZE == 1
     if (event >= ceventTable.maxEventNum) return;
     CEvent **cevent = (CEvent **) ceventTable.eventBase[event];
     while (*cevent != NULL)
     {
-        ceventRun(*cevent++);
+        ceventRun(*cevent++, para);
     }
 #else
     for (size_t i = 0; i < ceventTable.count; i++)
@@ -197,8 +197,8 @@ static void ceventHandler(unsigned short event)
  * @param event 事件
  * 
  */
-void ceventPost(unsigned short event)
+void ceventPost(unsigned short event, void *para)
 {
-    ceventHandler(event);
+    ceventHandler(event, para);
 }
 
