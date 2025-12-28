@@ -83,7 +83,7 @@ void ceventInit(void)
                 *cur++ = (size_t) &base[j];
             }
         }
-        *cur++ = NULL;
+        *cur++ = (size_t)NULL;
     }
 #else /** CEVENT_SPEED_OPTIMIZE == 1 */
     ceventTable.base = base;
